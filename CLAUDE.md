@@ -69,8 +69,14 @@ Subsystem folders: `camera`, `vision`, `cnn`, `hdmi`, `servo`, `bluetooth`,
 
 ## Git conventions
 
-- Branch names: `member-b`, `member-c` (long-lived, one per teammate);
-  integrator works on `main`.
+- Branch names: `member-a` (the integrator's own editing branch),
+  `member-b`, `member-c` (long-lived, one per teammate). The integrator
+  switches to `main` only to merge verified work. Before writing files for the
+  human, check which branch is checked out (`.git/HEAD`); the working folder
+  always reflects the current branch.
+- The repo is currently Public so that all three can use GitKraken's free
+  tier (private remotes need a paid plan). Never put secrets, personal data,
+  or student IDs in the repo.
 - Commit messages in English: `[area] what changed`, for example
   `[cam] add capture state machine`. Areas: cam, vis, cnn, hdmi, srv, bt,
   ctrl, top, constr, ip, ml, scripts, docs.
