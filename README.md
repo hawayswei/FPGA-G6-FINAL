@@ -27,6 +27,7 @@
 
    專案會建在 `vivado_prj/` 裡。之後你在 Vivado 改的 `.v` 檔，就是 repo 裡的檔案本身。
 
+> **使用 GitKraken 的人**請改看 `docs/manual/01-gitkraken-guide.md`（註冊、安裝、clone、分支、存檔、上傳的完整步驟）。repo 目前是 Public，GitKraken 免費版可以用；若之後改回 Private，請改用 GitHub Desktop。
 > 圖文版逐步 SOP 在 `docs/manual/`（整合者完成第一次完整演練後補上）。
 
 ## 每天的工作流程
@@ -56,9 +57,9 @@
 
 | 角色 | 人員 | 負責 |
 |---|---|---|
-| 整合者 | （待填） | `pet_top`、`constr/`、`ip/`、`scripts/`、合併 `main` |
-| 成員 B | （待填） | （待定） |
-| 成員 C | （待填） | （待定） |
+| 整合者 | （待填） | `pet_top`、`constr/`、`ip/`、`scripts/`、合併 `main`；平常寫程式用 `member-a` 分支 |
+| 成員 B（分支 `member-b`） | （待填） | （待定） |
+| 成員 C（分支 `member-c`） | （待填） | （待定） |
 
 子系統分工在 11/15 提案前後確定，之後更新這張表。
 
