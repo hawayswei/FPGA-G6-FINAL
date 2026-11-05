@@ -1,0 +1,18 @@
+# Normalize line endings so Windows editors and Vivado do not create fake diffs.
+* text=auto
+
+*.v    text eol=lf
+*.xdc  text eol=lf
+*.tcl  text eol=lf
+*.md   text eol=lf
+*.py   text eol=lf
+*.bat  text eol=crlf
+
+*.mem  text
+*.coe  text
+*.hex  text
+
+*.png  binary
+*.jpg  binary
+*.pdf  binary
+*.xlsx binary

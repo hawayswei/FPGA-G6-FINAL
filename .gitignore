@@ -1,0 +1,51 @@
+# ---- Vivado: generated, never commit -------------------------------------
+vivado_prj/
+build/
+.Xil/
+*.xpr
+*.jou
+*.log
+*.str
+*.cache/
+*.runs/
+*.sim/
+*.hw/
+*.gen/
+*.srcs/
+*.ip_user_files/
+*.dcp
+*.wdb
+xsim.dir/
+webtalk*
+
+# ---- Bitstreams and debug probes: attach to GitHub Releases / Drive ------
+*.bit
+*.bin
+*.ltx
+
+# ---- Large media: keep on Google Drive ----------------------------------
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# ---- Python / ML ----------------------------------------------------------
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+ml/data/
+ml/datasets/
+*.pt
+*.pth
+*.h5
+*.ckpt
+# Small quantized weights for the FPGA (*.mem, *.coe, *.hex) ARE committed.
+
+# ---- OS / editor ----------------------------------------------------------
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+*.swp
