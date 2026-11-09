@@ -5,7 +5,7 @@
 
 ## 先看這三條鐵則
 
-1. **只改自己負責的資料夾**（見根目錄 `README.md` 的資料夾地圖）。
+1. **只改自己負責的檔案**（分工見根目錄 `README.md`；專案內容還沒定案時，先只動 `docs/` 裡自己的文件）。
 2. **只推自己的分支**（`member-b`、`member-c` 等），不要碰 `main`。
 3. **看到「conflict／衝突」就停手，截圖給整合者**，不要自己選、不要按 Force push。
 
@@ -13,12 +13,11 @@
 
 | 想知道什麼 | 看哪份文件 | 位置 |
 |---|---|---|
-| 專案是什麼、資料夾怎麼分、命名規則 | 根目錄 README | `README.md` |
+| 專案目前的狀態、資料夾、基本規則 | 根目錄 README | `README.md` |
 | 用 GitHub Desktop 的操作（備用） | 根目錄 README | `README.md`（第一次設定、每天的工作流程） |
 | 用 GitKraken 的操作（這份） | 本手冊 | `docs/manual/01-gitkraken-guide.md` |
-| git 名詞的直覺解釋（整合者用） | 維護者入門 | `docs/manual/00-maintainer-primer.md` |
-| 請 AI 寫 Verilog 前要貼的規則 | AI 規則 | `docs/AI_RULES.md` |
-| 腳本怎麼用（建專案、檢查） | 腳本說明 | `scripts/README.md` |
+| git 名詞的直覺解釋 | 本手冊第 9 節 | `docs/manual/01-gitkraken-guide.md` |
+| 課程題目、評分、日期 | 課程規定 | `docs/spec/` |
 
 ## 快速索引：我遇到的問題在哪一節？
 
@@ -30,7 +29,7 @@
 | 我要**選擇 repo 放在電腦哪裡** | 第 4 節 B |
 | 我已經下載過了，**下次要怎麼再打開** | 第 4 節 C |
 | 我打開 repo 了，**怎麼切換到我的分支** | 第 5 節 |
-| 我要用 Vivado 開這個專案 | 第 6 節 |
+| 我要用 Vivado 開專案 | 第 6 節（目前還沒有，定案後補上） |
 | 我要同步、存檔、上傳 | 第 7 節 |
 | 畫面出現奇怪的東西或錯誤 | 第 8 節 |
 
@@ -41,7 +40,7 @@
 3. 下載並安裝 GitKraken，登入
 4. 把 repo 下載到你的電腦（Clone）
 5. 切換到你自己的分支（Checkout）
-6. 用 Vivado 開啟專案
+6. 用 Vivado 開啟專案（待專案定案後補上）
 7. 每天的工作流程：同步、存檔、上傳
 8. 出問題怎麼辦
 9. 名詞對照
@@ -168,21 +167,9 @@ repo 雖然是公開的（任何人都能看和下載），但**只有被邀請�
 
 **每次開工前都要看一眼：** 確認你在自己的分支上。如果發現在 `main` 上，**不要存檔，先切回自己的分支**。
 
-## 6. 用 Vivado 開啟專案
+## 6. 用 Vivado 開啟專案（待補）
 
-repo 裡**沒有**現成的 Vivado 專案檔，要用腳本在你的電腦建立。
-
-1. 開啟 Vivado 2019.2，進入主畫面。
-2. 視窗最下方找 **Tcl Console**，在輸入列貼上（斜線一律用 `/`）：
-
-   ```
-   source D:/FPGA/FPGA-G6-FINAL/scripts/create_project.tcl
-   ```
-3. 按 Enter。看到 `INFO: done. Top = pet_top` 就成功了。專案會建在 `vivado_prj/`，這個資料夾不會被 git 記錄。
-4. 之後每次**同步完最新版本（第 7 節 A）或切換分支後**，都要在 Tcl Console 再執行一次同一行，新增或刪除的檔案才會反映在專案裡。
-5. 下次想直接開專案：Vivado 選 *File → Open Project…*，選 `D:\FPGA\FPGA-G6-FINAL\vivado_prj\pet.xpr`。
-
-**在 Vivado 新增檔案的正確做法：** *File → Add Sources → Add or create design sources → Create File*，位置選 `D:\FPGA\FPGA-G6-FINAL\rtl\你的子系統\`。**不要勾選 Copy sources into project**。
+我們還沒決定要做什麼專題，所以 repo 裡目前**沒有**任何程式碼或 Vivado 專案。這一節等專題定案、整合者放好專案架構後再補上。現在先熟悉第 1～5 節與第 7 節的流程就好。
 
 ## 7. 每天的工作流程
 
@@ -198,30 +185,28 @@ repo 裡**沒有**現成的 Vivado 專案檔，要用腳本在你的電腦建立
 4. 結果有兩種：
    - 順利：圖上會出現新的合併節點，或顯示已經是最新。做完就繼續。
    - 出現 **conflict／衝突** 字樣：**停手，截圖給整合者。**
-5. 合併成功後，到 Vivado 的 Tcl Console 再執行一次 `source D:/FPGA/FPGA-G6-FINAL/scripts/create_project.tcl`。
+5. 合併成功後，看一下資料夾裡有沒有新增或更新的檔案。
 
 > 你自己的分支只有你在推，所以不需要對自己的分支按 Pull。
 
-### B. 寫程式
+### B. 編輯內容
 
-在 Vivado 裡寫，只改自己負責的資料夾。每次寫完先按 **Run Synthesis**，確認沒有錯誤。若想整體檢查，雙擊 `scripts/check.bat`。
-
-寫程式前，先把 `docs/AI_RULES.md` 的內容貼給聊天 AI，它寫出來的 Verilog 才會符合我們的規則。
+目前 repo 裡只有文件，可以在 `docs/` 底下新增或修改自己的文件（Markdown 或文字檔都可以）。專案定案、有程式碼之後，這裡會補上程式的規則。
 
 ### C. 存檔（Commit）
 
 存檔就是「替目前的修改做一個可以回頭的存檔點」。
 
-1. 在 Vivado 儲存所有檔案（Ctrl+S）。
+1. 在你的編輯器儲存所有檔案（Ctrl+S）。
 2. 回到 GitKraken，圖最上方會多出一個 **WIP**（Work In Progress）節點，**點它**。
 3. 右邊面板會列出所有改過的檔案。**逐一看一下**，確認：
-   - 都是你負責的資料夾裡的檔案。
-   - 沒有 `vivado_prj`、`build`、`.bit`、`.log` 之類的東西。
+   - 都是你自己改的檔案。
+   - 沒有 `vivado_prj`、`build`、`.bit`、`.log`、影片之類的東西。
 4. 按 **Stage all changes**（全部加入），或點個別檔案的勾選框。
 5. 在訊息欄輸入一行**英文**說明，格式 `[區域] 做了什麼`，例如：
-   - `[cam] add capture state machine`
-   - `[servo] fix pwm period`
-   區域代號：cam、vis、cnn、hdmi、srv、bt、ctrl、ml、docs。
+   - `[docs] add meeting notes 11/10`
+   - `[docs] fix typo in README`
+   區域代號先用 `docs`；專題定案後整合者會公告更細的分類。
 6. 按 **Commit**（綠色按鈕）。
 
 ### D. 上傳（Push）
@@ -244,8 +229,7 @@ repo 裡**沒有**現成的 Vivado 專案檔，要用腳本在你的電腦建立
 | 左邊面板看不到別人的分支 | 按 Pull 旁邊的小箭頭 → **Fetch All** |
 | 發現自己在 `main` 上而且已經改了檔案 | **不要 commit、不要 push**，截圖給整合者 |
 | 不小心 commit 了不該放的檔案（如 `.bit`、`vivado_prj`） | 還沒 push：截圖給整合者。已經 push：立刻告訴整合者，不要自己處理 |
-| Vivado 說找不到檔案或專案編不過 | 先確認分支、再重新執行 `create_project.tcl`；還是不行就截圖給整合者 |
-| 路徑含中文導致 Vivado 錯誤 | 關閉 GitKraken 的該 repo，刪掉資料夾，重新 Clone 到 `D:\FPGA\FPGA-G6-FINAL`（第 4 節 B） |
+| 路徑含中文（之後用 Vivado 會出錯） | 關閉 GitKraken 的該 repo，刪掉資料夾，重新 Clone 到 `D:\FPGA\FPGA-G6-FINAL`（第 4 節 B） |
 | 我不小心 Clone 了兩次 | 只留一份，其他的先問整合者再刪；之後用第 4 節 C 打開，不要再 Clone |
 | 找不到 Clone 的選項 | 看 File 選單，或 *Repository Management* 分頁；名稱可能叫 *Clone / Init / Open* |
 | 不確定能不能按某個按鈕 | **先問再按** |
@@ -279,8 +263,8 @@ repo 裡**沒有**現成的 Vivado 專案檔，要用腳本在你的電腦建立
 2. 左邊面板 **LOCAL** 雙擊 `main`，切換到 `main`。
 3. 按 Pull 旁邊小箭頭 → **Fetch All**，再確認 `main` 是最新。
 4. 在左邊面板 **REMOTE → origin** 找到要合併的分支（例如 `member-b`），**按右鍵選 Merge**，把它合進目前的 `main`。
-5. 有衝突時，在右邊面板點有衝突的檔案，會開啟合併工具，逐段決定保留哪一邊。解完先跑 `scripts/check.bat`，PASS 才繼續。
+5. 有衝突時，在右邊面板點有衝突的檔案，會開啟合併工具，逐段決定保留哪一邊。解完再繼續。
 6. 按 **Push**，把更新後的 `main` 上傳。
 7. 回到 `member-a`，用第 7 節 A 的方式把最新 `main` 合進來。
 
-合併前的檢查：這個分支改了哪些檔案、有沒有動到 `pet_top.v`、`constr/`、`ip/`、`scripts/`；有沒有跑過 `check.bat`；組員有沒有上板測過。
+合併前的檢查：看這個分支改了哪些檔案、有沒有動到不該動的東西（`.gitignore`、`.gitattributes`、別人的文件）；組員有沒有確認內容可以合併。專案有程式碼之後，這裡會加入「合成檢查」與「上板測試」。
