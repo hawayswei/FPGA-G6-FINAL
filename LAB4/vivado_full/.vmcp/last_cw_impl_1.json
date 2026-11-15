@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "run_name": "impl_1",
+  "report": {
+    "errors": 0,
+    "critical_warnings": 0,
+    "warnings": 1,
+    "groups": [],
+    "error_groups": []
+  },
+  "raw_cws": []
+}
