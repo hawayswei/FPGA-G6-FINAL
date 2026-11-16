@@ -50,6 +50,8 @@ set n_rtl [add_missing sources_1 [glob_recursive [file join $repo_root rtl] *.v]
 set n_ip  [add_missing sources_1 [glob_recursive [file join $repo_root ip]  *.xci]]
 set n_xdc [add_missing constrs_1 [glob -nocomplain -directory [file join $repo_root constr] *.xdc]]
 set n_sim [add_missing sim_1     [glob_recursive [file join $repo_root sim] *.v]]
+# Test vector files read by testbenches with $readmemh (copied to the simulation folder)
+set n_mem [add_missing sim_1     [glob_recursive [file join $repo_root sim] *.mem]]
 
 # Remove project entries whose files no longer exist (deleted upstream).
 set n_removed 0

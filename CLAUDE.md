@@ -36,7 +36,9 @@ human.
 | `sim/<subsystem>/` | testbenches, mirror of `rtl/` | owner |
 | `constr/` | `.xdc` files, split by function | integrator only |
 | `ip/` | single-IP `.xci` files only | integrator only |
-| `scripts/` | Tcl and `.bat` helpers | integrator only |
+| `scripts/` | Tcl and `.bat` helpers (`capture.tcl` records trials through the ILA) | integrator only |
+| `tools/` | Python: trial statistics, bit-exact fall model, test vector generator | integrator |
+| `data/trials/` | recorded trials, one small CSV each (`_report/` is generated, ignored) | anyone |
 | `docs/` | spec, manuals, templates, AI rules | anyone, keep tidy |
 
 Subsystem folders (proposed, not final): `accel`, `fall`, `temp`, `bluetooth`,

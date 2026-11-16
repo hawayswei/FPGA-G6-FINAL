@@ -1,35 +1,34 @@
 # ctrl 子系統
 
-> 複製此模板到 `rtl/<子系統>/README.md`，並隨著開發更新。目的：讓別人（和 AI）不用讀完所有程式碼就能接上你的模組。
-
 | 項目 | 內容 |
 |---|---|
 | 負責人 | 整合者 |
-| 狀態 | 未開始 / 開發中 / 已合成 / 已上板測試（擇一） |
+| 狀態 | 已模擬（`tb_ctrl_heartbeat`、`tb_ctrl_guardian` PASS）；上板測試待做 |
 | 模組前綴 | `ctrl_` |
-| 時脈 | 125 MHz `clk_i`（若需要其他時脈，在此說明來源 IP 與頻率） |
+| 時脈 | 125 MHz `clk_i` |
 | 重置 | 同步、低電位有效 `rst_n_i` |
 
-## 功能（一兩句話）
+## 功能
 
-（這個子系統做什麼）
+重置同步、心跳燈、按鈕處理，以及整個系統的狀態機（監測 → 詢問 10 秒 → 警報鎖存 → 解除）。
 
 ## 模組清單
 
 | 檔案 | 模組 | 用途 |
 |---|---|---|
-| （例）`bt_uart_rx.v` | `bt_uart_rx` | （例）接收手機傳來的 UART 位元組 |
+| `ctrl_reset_sync.v` | `ctrl_reset_sync` | 把重置按鈕變成同步、低電位有效的 `rst_n` |
+| `ctrl_heartbeat.v` | `ctrl_heartbeat` | 約 1 Hz 的心跳訊號 |
+| `ctrl_button.v` | `ctrl_button` | 防彈跳；分辨短按（放開時）與長按（按滿時間時） |
+| `ctrl_guardian_fsm.v` | `ctrl_guardian_fsm` | 系統狀態機與事件脈衝 |
 
-## 對外介面（接到 `guardian_top` 或其他子系統的埠）
+## 狀態機
 
-| 埠名 | 方向 | 位寬 | 說明 |
-|---|---|---|---|
-| （例）`pixel_data_o` | 輸出 | 16 | RGB565 像素 |
+| 狀態 | `state_o` | 離開條件 |
+|---|---|---|
+| MONITOR | 0 | `fall_i` → ASK；長按 → ALARM（求救） |
+| ASK | 1 | 短按 → MONITOR；長按 → ALARM（求救）；逾時 → ALARM（跌倒） |
+| ALARM | 2 | 短按 → MONITOR。期間每 `REPEAT_SECONDS` 重發一次事件 |
 
-## 需要的腳位
+輸出 `ask_left_o`（詢問剩餘秒數）與 `alarm_sos_o`（警報來源）給之後的 OLED 使用。事件脈衝：`ev_ask_o`、`ev_fall_o`、`ev_sos_o`、`ev_ok_o`。
 
-（列出這個子系統需要的板上腳位；實際 `.xdc` 由整合者加入 `constr/`）
-
-## 已知問題 / 待辦
-
-- （無）
+時間參數的修改位置見 `docs/TUNING.md`。
