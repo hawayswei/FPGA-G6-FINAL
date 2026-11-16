@@ -169,7 +169,19 @@ repo 雖然是公開的（任何人都能看和下載），但**只有被邀請�
 
 ## 6. 用 Vivado 開啟專案（待補）
 
-我們還沒決定要做什麼專題，所以 repo 裡目前**沒有**任何程式碼或 Vivado 專案。這一節等專題定案、整合者放好專案架構後再補上。現在先熟悉第 1～5 節與第 7 節的流程就好。
+repo 裡**沒有**現成的 Vivado 專案檔，要用腳本在你的電腦建立。
+
+1. 開啟 Vivado 2019.2，進入主畫面。
+2. 視窗最下方找 **Tcl Console**，在輸入列貼上（斜線一律用 `/`）：
+
+   ```
+   source D:/FPGA/FPGA-G6-FINAL/scripts/create_project.tcl
+   ```
+3. 按 Enter。看到 `INFO: done. Top = guardian_top` 就成功了。專案會建在 `vivado_prj/`，這個資料夾不會被 git 記錄。
+4. 之後每次**同步完最新版本（第 7 節 A）或切換分支後**，都要在 Tcl Console 再執行一次同一行，新增或刪除的檔案才會反映在專案裡。
+5. 下次想直接開專案：Vivado 選 *File → Open Project…*，選 `D:\FPGA\FPGA-G6-FINAL\vivado_prj\guardian.xpr`。
+
+**在 Vivado 新增檔案的正確做法：** *File → Add Sources → Add or create design sources → Create File*，位置選 `D:\FPGA\FPGA-G6-FINAL\rtl\你的子系統\`。**不要勾選 Copy sources into project**。
 
 ## 7. 每天的工作流程
 
@@ -204,9 +216,9 @@ repo 雖然是公開的（任何人都能看和下載），但**只有被邀請�
    - 沒有 `vivado_prj`、`build`、`.bit`、`.log`、影片之類的東西。
 4. 按 **Stage all changes**（全部加入），或點個別檔案的勾選框。
 5. 在訊息欄輸入一行**英文**說明，格式 `[區域] 做了什麼`，例如：
-   - `[docs] add meeting notes 11/10`
-   - `[docs] fix typo in README`
-   區域代號先用 `docs`；專題定案後整合者會公告更細的分類。
+   - `[acl] add SPI controller`
+   - `[fall] fix threshold compare`
+   區域代號：acl、fall、tmp、bt、oled、ctrl、top、constr、docs。
 6. 按 **Commit**（綠色按鈕）。
 
 ### D. 上傳（Push）
@@ -267,4 +279,4 @@ repo 雖然是公開的（任何人都能看和下載），但**只有被邀請�
 6. 按 **Push**，把更新後的 `main` 上傳。
 7. 回到 `member-a`，用第 7 節 A 的方式把最新 `main` 合進來。
 
-合併前的檢查：看這個分支改了哪些檔案、有沒有動到不該動的東西（`.gitignore`、`.gitattributes`、別人的文件）；組員有沒有確認內容可以合併。專案有程式碼之後，這裡會加入「合成檢查」與「上板測試」。
+合併前的檢查：這個分支改了哪些檔案、有沒有動到 `guardian_top.v`、`constr/`、`ip/`、`scripts/`；有沒有跑過 `check.bat`；組員有沒有上板測過。

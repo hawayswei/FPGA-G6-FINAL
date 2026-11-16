@@ -6,28 +6,42 @@ human.
 
 ## Project
 
-- FPGA course final project, group 6, on a PYNQ-Z2 board (xc7z020clg400-1),
-  Vivado 2019.2 on Windows. **The project topic has NOT been decided yet.**
-  Do not invent one, and do not create code, folders, or constraints for a
-  topic until the human says it is decided.
+- FPGA course final project, group 6: "Invisible Guardian" (working title,
+  may change), a wearable elder-care system on a PYNQ-Z2 board
+  (xc7z020clg400-1). Pure PL, all Verilog, PS unused. No machine learning.
+- Function: fall detection from 3-axis acceleration only (PmodACL2 / ADXL362,
+  SPI) with a personalized threshold from user mode and height (sent by phone
+  over Bluetooth); on a fall the OLED asks "Are you OK?" and the wearer has
+  **10 s** to press a button to cancel, otherwise ALARM latches and a Bluetooth
+  alert goes to the phone; manual SOS by button; Pmod TMP3 (I2C) body
+  temperature shown on the RGB LED and OLED.
+- Subsystems: accelerometer SPI, fall detection, temperature I2C, Bluetooth
+  UART, OLED, control FSM (10 s timer, ALARM latch, buttons).
+- Proposal: `FPGA期末專題提案書.pdf` (outside the repo). The 10 s timeout is
+  decided; page 6 of the proposal still says 5 s and is a typo.
+- Toolchain: Vivado 2019.2 on Windows 11, same version for the whole team.
+  Typical install: `D:/Xilinx/Vivado/2019.2/bin/vivado.bat`.
 - Team of 3. The human maintainer is the **integrator**. Teammates are
   beginners with git and use a GUI (GitKraken or GitHub Desktop) plus a chat AI.
-- History: an earlier "desktop pet" skeleton (Verilog, Vivado scripts, folder
-  layout, AI rules) was removed on 2026-11-09 because the topic is undecided.
-  It remains in git history if ever needed. Do not restore it unprompted.
+- History: the earlier "desktop pet" topic was dropped; its camera/vision/CNN/
+  HDMI/servo folders were removed. The generic skeleton (top, reset sync,
+  heartbeat, scripts, AI rules) was kept and renamed for this project.
 
 ## Repo map (current)
 
 | Path | Content | Who edits |
 |---|---|---|
-| `README.md` | human-facing intro (Traditional Chinese) | integrator |
-| `CLAUDE.md` | this file | integrator |
-| `docs/manual/` | GitKraken manual for teammates | integrator |
-| `docs/spec/` | course notices (English-named copies of the original txt files) | read-only reference |
-| `.gitignore`, `.gitattributes` | ignore rules, line endings | integrator |
+| `rtl/top/` | `guardian_top.v` (top level wiring) | integrator only |
+| `rtl/<subsystem>/` | synthesizable Verilog, one folder per subsystem | that subsystem's owner |
+| `sim/<subsystem>/` | testbenches, mirror of `rtl/` | owner |
+| `constr/` | `.xdc` files, split by function | integrator only |
+| `ip/` | single-IP `.xci` files only | integrator only |
+| `scripts/` | Tcl and `.bat` helpers | integrator only |
+| `docs/` | spec, manuals, templates, AI rules | anyone, keep tidy |
 
-Once the topic is decided, the integrator will define the source layout,
-naming rules, and subsystem owners here and in `README.md`.
+Subsystem folders (proposed, not final): `accel`, `fall`, `temp`, `bluetooth`,
+`oled`, `ctrl`. Every subsystem folder must contain a `README.md` (copy
+`docs/templates/SUBSYSTEM_README.md`) stating owner, ports, clocks, status.
 
 ## Hard rules (never violate)
 
@@ -35,13 +49,32 @@ naming rules, and subsystem owners here and in `README.md`.
    branches without the human explicitly asking in this session.
 2. Never commit: `vivado_prj/`, `build/`, `*.bit`, `*.xpr`, videos, datasets,
    logs. `.gitignore` covers these; do not use `git add -f`.
-3. Teammates push only to their own branch (`member-b`, `member-c`; names may
+3. Only the integrator changes `rtl/top/guardian_top.v`, `constr/*.xdc`, `ip/`,
+   `scripts/`. If you are working for a teammate and need such a change, write
+   the request into the PR description or tell the human; do not edit.
+4. Teammates push only to their own branch (`member-b`, `member-c`; names may
    change). Only the integrator merges into `main`.
-4. On any merge conflict: stop, show the human the conflicting files, and wait.
-5. The repo is **Public**. Never put secrets, tokens, personal data, or student
-   IDs in it. Never ask for, print, or store GitHub tokens or passwords.
-6. Do not use Vivado Block Design when code is added later; use plain
-   Verilog and single-IP `.xci` files (to be confirmed when the topic is set).
+5. On any merge conflict: stop, show the human the conflicting files, and wait.
+   Do not resolve a conflict for a teammate's file without being told.
+6. Do not use Vivado Block Design. IP cores only as single `.xci` in `ip/`.
+7. Never ask for, print, or store GitHub tokens or passwords. Authentication
+   is done by the human with `gh auth login` in a browser.
+
+## Verilog conventions
+
+- Verilog-2001 only (`.v`). No SystemVerilog.
+- One module per file; file name = module name.
+- Module names carry the subsystem prefix: `acl_`, `fall_`, `tmp_`, `bt_`,
+  `oled_`, `ctrl_`. Top is `guardian_top`.
+- Ports end in `_i` (input) or `_o` (output). Active-low signals end in `_n`
+  before the direction suffix, for example `rst_n_i`.
+- One clock: 125 MHz `sysclk_i`. Slower rates use clock enables, not
+  derived clocks. SPI/I2C clocks are generated as enables, not as clocks.
+- One reset: synchronous, active low `rst_n`, generated once in `guardian_top` by
+  `ctrl_reset_sync` and passed to every module.
+- Comments and identifiers in English. Every file starts with a header
+  comment: module, owner, purpose, clock, reset.
+- Do not leave latches; assign every output in every branch.
 
 ## Git conventions
 
@@ -50,10 +83,15 @@ naming rules, and subsystem owners here and in `README.md`.
   for the human, check which branch is checked out (`.git/HEAD`); the working
   folder always reflects the current branch.
 - Commit messages in English: `[area] what changed`, for example
-  `[docs] add meeting notes`. Area codes will be extended when the topic is set.
-- Milestone tags (integrator only), when needed: `proposal-v1`, `video-v1`,
-  `demo-v1`, `report-v1`. Deadlines may move; add new tags instead of freezing
-  `main`.
+  `[acl] add SPI controller`. Areas: acl, fall, tmp, bt, oled, ctrl, top,
+  constr, ip, scripts, docs.
+- Milestone tags (integrator only): `proposal-v1`, `video-v1`, `demo-v1`,
+  `report-v1`. Deadlines may move; add new tags instead of freezing `main`.
+- `main` must always build. Before merging a branch into `main`, run
+  `scripts/check.bat` (or `vivado -mode batch -source scripts/check.tcl`)
+  and confirm `build/check_result.txt` says PASS.
+- In a PR description state: what changed, whether it was synthesized, and
+  whether it was tested on the board.
 
 ## Working notes (learned the hard way)
 

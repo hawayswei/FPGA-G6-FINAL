@@ -35,8 +35,6 @@ __pycache__/
 .venv/
 venv/
 .ipynb_checkpoints/
-ml/data/
-ml/datasets/
 *.pt
 *.pth
 *.h5
