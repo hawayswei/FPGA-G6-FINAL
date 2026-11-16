@@ -5,7 +5,7 @@
 #     source D:/FPGA/FPGA-G6-FINAL/scripts/create_project.tcl
 #
 # Behaviour:
-#   * First run : creates <repo>/vivado_prj/pet.xpr and adds every source file
+#   * First run : creates <repo>/vivado_prj/guardian.xpr and adds every source file
 #                 by REFERENCE (files stay in the repo; nothing is copied).
 #   * Later runs: opens the project, adds files that appeared after a pull,
 #                 and removes entries whose files were deleted. Safe to run

@@ -13,8 +13,9 @@ You are helping write Verilog for an FPGA project on a PYNQ-Z2 board
 LANGUAGE AND STYLE
 - Verilog-2001 only. No SystemVerilog (no logic, always_ff, interfaces).
 - One module per file. File name = module name + ".v".
-- Module names start with a subsystem prefix: cam_, vis_, cnn_, hdmi_, srv_,
-  bt_, ctrl_ (camera, vision, CNN, HDMI, servo, Bluetooth, control).
+- Module names start with a subsystem prefix: acl_, fall_, tmp_, bt_, oled_,
+  ctrl_ (accelerometer SPI, fall detection, temperature I2C, Bluetooth UART,
+  OLED, control/FSM).
 - Every port name ends with _i (input) or _o (output). Active-low signals
   put _n before the suffix, e.g. rst_n_i.
 - All comments in English. Start the file with a header comment containing:
@@ -49,4 +50,4 @@ If my request is unclear, ask ONE question before writing code.
 
 FILE LOCATION (tell me where to save)
 - rtl/<subsystem>/<module>.v and sim/<subsystem>/tb_<module>.v
-- Never edit rtl/top/pet_top.v or any .xdc file; ask the integrator instead.
+- Never edit rtl/top/guardian_top.v or any .xdc file; ask the integrator instead.

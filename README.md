@@ -1,11 +1,11 @@
-# FPGA-G6-FINAL：桌面寵物（暫定名稱）
+# FPGA-G6-FINAL：隱形守護者（暫定名稱）
 
 > **給人看的文件在這份 README 和 `docs/manual/`；給 AI agent 看的在 `CLAUDE.md` 和 `docs/AI_RULES.md`。**
 > 這個 repo 是我們三人共同編輯 Verilog 的地方。程式碼同步靠 GitHub，編譯與燒錄仍在各自電腦的 Vivado 2019.2 上做。
 
 ## 這個專案是什麼
 
-用 PYNQ-Z2 板子做一隻桌面寵物：鏡頭看手勢、雲台與小手臂動作、HDMI 顯示狀態、藍牙用手機遙控。全部寫在 PL（可程式邏輯）端，純 Verilog，不用 ARM 處理器。
+用 PYNQ-Z2 板子做穿戴式長者照護裝置：加速度計（PmodACL2）與溫度計（Pmod TMP3）綁在上臂，FPGA 以硬體邏輯判定跌倒與體溫異常。偵測到跌倒後 OLED 詢問「Are you OK?」，配戴者 10 秒內可按鈕取消，否則進入 ALARM 並用藍牙通知手機；也可按鈕手動求救。手機藍牙可設定使用者模式與身高。全部寫在 PL（可程式邏輯）端，純 Verilog，不用 ARM 處理器，不使用機器學習。
 
 ## 你只需要記得三件事
 
@@ -34,7 +34,7 @@
 
 1. **開工前**：GitHub Desktop 選單 *Branch → Update from main*，把別人已合併的東西拉進你的分支。若 Vivado 專案開著，再執行一次上面的 `source ...create_project.tcl`，新檔案才會出現。
 2. **在 Vivado 裡寫程式**，用 *Run Synthesis* 確認沒有錯誤。
-3. **存檔上傳**：GitHub Desktop 左下角填一行英文訊息（格式 `[cam] add capture FSM`），按 *Commit to 你的分支*，再按上方 *Push origin*。
+3. **存檔上傳**：GitHub Desktop 左下角填一行英文訊息（格式 `[acl] add SPI controller`），按 *Commit to 你的分支*，再按上方 *Push origin*。
 4. **跟整合者說一聲**，他會合併。合併前請告訴他：這版有沒有上板測過。
 5. 想確認整個設計沒壞，可雙擊 `scripts/check.bat`（需要幾分鐘，建議但不強制）。
 
@@ -42,12 +42,11 @@
 
 | 資料夾 | 放什麼 | 誰可以改 |
 |---|---|---|
-| `rtl/top/` | 頂層 `pet_top.v`，把所有子系統接起來 | 整合者 |
-| `rtl/camera/` `vision/` `cnn/` `hdmi/` `servo/` `bluetooth/` `ctrl/` | 各子系統的 Verilog | 該子系統負責人 |
+| `rtl/top/` | 頂層 `guardian_top.v`，把所有子系統接起來 | 整合者 |
+| `rtl/accel/` `fall/` `temp/` `bluetooth/` `oled/` `ctrl/` | 各子系統的 Verilog（資料夾清單暫定） | 該子系統負責人 |
 | `sim/` | testbench（結構和 `rtl/` 一樣） | 負責人 |
 | `constr/` | 腳位與時序約束 `.xdc`（依功能拆檔） | 整合者 |
 | `ip/` | Vivado IP 的 `.xci` | 整合者 |
-| `ml/` | CNN 訓練程式與小型權重檔 | CNN 負責人 |
 | `scripts/` | 建專案、檢查、備用 `.bat` 腳本 | 整合者 |
 | `docs/` | 題目規定、手冊、模板、AI 規則 | 大家 |
 
@@ -57,7 +56,7 @@
 
 | 角色 | 人員 | 負責 |
 |---|---|---|
-| 整合者 | （待填） | `pet_top`、`constr/`、`ip/`、`scripts/`、合併 `main`；平常寫程式用 `member-a` 分支 |
+| 整合者 | （待填） | `guardian_top`、`constr/`、`ip/`、`scripts/`、合併 `main`；平常寫程式用 `member-a` 分支 |
 | 成員 B（分支 `member-b`） | （待填） | （待定） |
 | 成員 C（分支 `member-c`） | （待填） | （待定） |
 
@@ -66,10 +65,10 @@
 ## 命名與寫法規則（精簡版）
 
 - 只用 **Verilog-2001**（`.v`），不用 SystemVerilog。一個檔案一個模組，檔名＝模組名。
-- 模組名加子系統前綴：`cam_` `vis_` `cnn_` `hdmi_` `srv_` `bt_` `ctrl_`。
+- 模組名加子系統前綴：`acl_` `fall_` `tmp_` `bt_` `oled_` `ctrl_`。
 - 埠名結尾：輸入 `_i`、輸出 `_o`；低電位有效在前面加 `_n`，如 `rst_n_i`。
 - 全專案只用一個時脈（125 MHz 的 `sysclk_i`），慢速用 enable 訊號，**不要自己除頻產生新時脈**。
-- 重置統一為同步、低電位有效的 `rst_n`，由 `pet_top` 統一提供。
+- 重置統一為同步、低電位有效的 `rst_n`，由 `guardian_top` 統一提供。
 - 程式碼、註解、commit 訊息一律英文；分支名稱 `member-b` 這種英文格式。
 - 用 AI 聊天產生程式碼時，先把 `docs/AI_RULES.md` 的內容貼給它。
 

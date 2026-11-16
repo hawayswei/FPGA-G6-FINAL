@@ -3,9 +3,9 @@
 ## Owner : integrator (only the integrator edits constraint files)
 ## Source: pin locations copied from the course file "PYNQ-Z2 v1.0.xdc".
 ##         Port names follow the team convention (_i / _o) and must match
-##         the ports of rtl/top/pet_top.v.
-## Rule  : Subsystem pins go in their own file (camera.xdc, hdmi.xdc,
-##         servo.xdc, bt.xdc ...). Do not add them here.
+##         the ports of rtl/top/guardian_top.v.
+## Rule  : Subsystem pins go in their own file (acl2.xdc, tmp3.xdc, oled.xdc,
+##         bt.xdc ...). Do not add them here.
 ## ============================================================================
 
 ## 125 MHz system clock

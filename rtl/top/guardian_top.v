@@ -1,18 +1,18 @@
 // ============================================================================
-// Module : pet_top
+// Module : guardian_top
 // Owner  : integrator (only the integrator edits this file)
-// Purpose: Top level of the desktop-pet project. Wires all subsystems
+// Purpose: Top level of the Invisible Guardian (fall detection) project. Wires all subsystems
 //          together. Currently a smoke-test skeleton only.
 // Clock  : sysclk_i = 125 MHz (PYNQ-Z2 pin H16). All logic uses this clock.
 //          Slower rates must use clock enables, not derived clocks.
-//          Exceptions (camera pixel clock, HDMI pixel clock) must come from a
+//          Exceptions (none planned) must come from a
 //          Clock Wizard IP and be documented in that subsystem's README.
 // Reset  : One synchronous, active-low rst_n made by ctrl_reset_sync from
 //          button btn_i[3]. Every module receives rst_n.
 // ============================================================================
 `timescale 1ns / 1ps
 
-module pet_top (
+module guardian_top (
     input  wire       sysclk_i,   // 125 MHz board clock
     input  wire [3:0] btn_i,      // push buttons, 1 = pressed
     output wire [3:0] led_o       // user LEDs
