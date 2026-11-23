@@ -46,7 +46,7 @@
 
 **每次合併組員分支前**：
 1. 先 `git fetch`，用 `git log main..member-b --oneline` 看他做了什麼。
-2. `git diff main...member-b --stat` 看改了哪些檔案；有沒有動到只有你能改的檔案（`pet_top.v`、`constr/`、`ip/`、`scripts/`）。
+2. `git diff main...member-b --stat` 看改了哪些檔案；有沒有動到只有你能改的檔案（`guardian_top.v`、`constr/`、`ip/`、`scripts/`）。
 3. 在你的電腦跑 `scripts/check.bat`，要看到 PASS。
 4. 能的話上板測，再合併。
 5. 合併後 `git push`，在需要時打 tag。
