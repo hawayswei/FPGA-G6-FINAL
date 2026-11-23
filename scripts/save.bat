@@ -23,7 +23,7 @@ git diff --cached --quiet
 if not errorlevel 1 goto nochange
 
 echo Write a short message in English, format: [area] what you did
-echo Example: [cam] add capture state machine
+echo Example: [acl] add SPI controller
 echo Avoid special characters such as ^& ^| ^< ^> and double quotes.
 set "MSG="
 set /p MSG=Message:

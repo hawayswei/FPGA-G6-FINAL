@@ -35,8 +35,6 @@ __pycache__/
 .venv/
 venv/
 .ipynb_checkpoints/
-ml/data/
-ml/datasets/
 *.pt
 *.pth
 *.h5
@@ -49,3 +47,11 @@ Desktop.ini
 .DS_Store
 .vscode/
 *.swp
+
+# ---- IP: only the .xci is committed, generated products are not -----------
+ip/*/*
+!ip/*/*.xci
+
+# ---- Experiment data: generated reports and fake demo data -----------------
+_report/
+data/demo_trials/

@@ -30,7 +30,7 @@ proc assert_safe_path {path} {
 }
 
 # Project-wide constants (single place to change them)
-set PRJ_NAME   pet
+set PRJ_NAME   guardian
 set FPGA_PART  xc7z020clg400-1
-set TOP_MODULE pet_top
+set TOP_MODULE guardian_top
 set SIM_TOP    tb_ctrl_heartbeat

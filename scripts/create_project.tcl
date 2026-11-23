@@ -5,7 +5,7 @@
 #     source D:/FPGA/FPGA-G6-FINAL/scripts/create_project.tcl
 #
 # Behaviour:
-#   * First run : creates <repo>/vivado_prj/pet.xpr and adds every source file
+#   * First run : creates <repo>/vivado_prj/guardian.xpr and adds every source file
 #                 by REFERENCE (files stay in the repo; nothing is copied).
 #   * Later runs: opens the project, adds files that appeared after a pull,
 #                 and removes entries whose files were deleted. Safe to run
@@ -50,6 +50,8 @@ set n_rtl [add_missing sources_1 [glob_recursive [file join $repo_root rtl] *.v]
 set n_ip  [add_missing sources_1 [glob_recursive [file join $repo_root ip]  *.xci]]
 set n_xdc [add_missing constrs_1 [glob -nocomplain -directory [file join $repo_root constr] *.xdc]]
 set n_sim [add_missing sim_1     [glob_recursive [file join $repo_root sim] *.v]]
+# Test vector files read by testbenches with $readmemh (copied to the simulation folder)
+set n_mem [add_missing sim_1     [glob_recursive [file join $repo_root sim] *.mem]]
 
 # Remove project entries whose files no longer exist (deleted upstream).
 set n_removed 0
